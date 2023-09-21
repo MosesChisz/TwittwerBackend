@@ -5,7 +5,7 @@ import twitterRoutes from "./routes/tweetRoutes"
 const app = express();
 app.use(express.json());
 app.use('/user', userRoutes);
-app.use('/twitter', twitterRoutes);
+app.use('/tweet', twitterRoutes);
 
 
 app.get('/', (req, res) => {
