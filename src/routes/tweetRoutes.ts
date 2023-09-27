@@ -1,25 +1,28 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken"
 
 const router = Router();
 const prisma = new PrismaClient()
 
+const JWT_SECRET = "SUPER SECRET";
 
 router.post('/', async (req, res) => {
-    const { content, image, userId  } = req.body; 
-    try{   
-    const result = await prisma.tweet.create({
-        data:{
-            content,
-            image,
-            userId           
-        }
-    })
-    res.json(result);
-}catch (e) {
-    res.status(400).json({ error: "Username and email should be unique"})
-}
-
+    const { content, image  } = req.body; 
+    //@ts-ignore
+    const user = req.user;
+    try{
+        const result = await prisma.tweet.create({
+            data:{
+                content,
+                image,
+                userId: user.id
+            }
+        })
+        res.json(result)
+    }catch(e){
+        res.status(400).json({error: "Username and email should be unique"});
+    }  
 })
 
 //List tweets
